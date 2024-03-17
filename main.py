@@ -7,24 +7,35 @@ from selenium.webdriver.common.by import By
 from proxy_randomizer import RegisteredProviders
 from proxy_randomizer.proxy import Anonymity
 import random
-
+import check_proxy
 
 rp = RegisteredProviders()
 rp.parse_providers()
-random_proxy = rp.get_random_proxy()
-russian = []
+#random_proxy = rp.get_random_proxy()
+#russian = []
+#for proxy_ in rp.proxies:
+#    proxy_ = str(proxy_)
+#    if proxy_.find('Russian')>0:
+#        print(proxy_)
+#        russian.append(proxy_)
+#
+#
+#proxy = random.choice(russian)
+#proxy = FreeProxy(country_id = ['US']).get()
+##proxy = str(random_proxy)
+#proxy = proxy[:proxy.find(' ')]
+#print(f'Selected proxy: {proxy}')
+
+
+proxy_list = []
 for proxy_ in rp.proxies:
-    proxy_ = str(proxy_)
-    if proxy_.find('Russian')>0:
-        print(proxy_)
-        russian.append(proxy_)
+    tmp = str(proxy_)
+    proxy_list.append(tmp[:tmp.find(' ')])
 
+good_proxy_list = check_proxy.check_proxy(proxy_list)
+print(good_proxy_list)
+proxy = random.choice(good_proxy_list) 
 
-proxy = random.choice(russian)
-proxy = FreeProxy(country_id = ['US']).get()
-#proxy = str(random_proxy)
-proxy = proxy[:proxy.find(' ')]
-print(f'Selected proxy: {proxy}')
 
 
 # define custom options for the Selenium driver
@@ -40,7 +51,7 @@ driver = webdriver.Chrome(
 )
 
 
-driver.get('http://httpbin.org/ip')
+#driver.get('http://httpbin.org/ip')
 #driver.get('https://detivinternete.ru/14-7/')
 #driver.get('https://detivinternete.ru')
 
